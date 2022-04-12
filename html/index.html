@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <link rel="stylesheet" href="http://133.18.232.25/homeawaymonitor/style.css">
+        <title>HomeAwayMonitor</title>
+    </head>
+    <body>
+        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@^3"></script>
+        <script src="https://cdn.jsdelivr.net/npm/moment@^2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@^1"></script>
+
+        <h1>Home Away Monitor</h1>
+        <div>
+            時間幅
+            <select id="time_range" onchange="time_range_change();">
+                <option value="week">１週間</option>
+                <option value="day">１日</option>
+                <option value="one_month">１カ月</option>
+                <option value="three_month">3カ月</option>
+            </select>
+        </div>
+        <div class="homeawaychart">
+            <canvas id="HomeAway"></canvas>
+        </div>
+        <script src="http://133.18.232.25/homeawaymonitor/main.js"></script>
+    </body>
+</html>
