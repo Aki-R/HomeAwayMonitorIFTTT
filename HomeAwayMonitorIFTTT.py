@@ -17,6 +17,9 @@ SCOPES = [
     'https://www.googleapis.com/auth/drive',
     'https://www.googleapis.com/auth/spreadsheets']
 
+# Initialization
+flag_in_home = True
+
 sa_creds = service_account.Credentials.from_service_account_file('homeawaymonitor_APIKey.json')
 scoped_creds = sa_creds.with_scopes(SCOPES)
 drive_service = build('drive', 'v3', credentials=scoped_creds)
@@ -37,16 +40,26 @@ df['DateTime'] = pd.to_datetime(df['DateTime'])
 df2 = pd.DataFrame(index=[], columns=['DateTime','InHome'])
 
 for row in df.itertuples():
-    if(row[2] == 'entered'):
+    if row[2] == 'entered':
+        flag_in_home = True
         time_loc = row[1] + DateOffset(seconds=1)
         df_loc = pd.DataFrame({'DateTime': [row[1], time_loc],
                            'InHome': ['Away', 'Home']})
-        df2 = pd.concat([df2,df_loc],ignore_index=True)
-    if(row[2] == 'exited'):
+        df2 = pd.concat([df2, df_loc], ignore_index=True)
+    if row[2] == 'exited':
+        flag_in_home = False
         time_loc = row[1] + DateOffset(seconds=1)
         df_loc = pd.DataFrame({'DateTime': [row[1], time_loc],
                                'InHome': ['Home', 'Away']})
-        df2 = pd.concat([df2, df_loc],ignore_index=True)
+        df2 = pd.concat([df2, df_loc], ignore_index=True)
+
+time_loc = time.time()
+if flag_in_home:
+    df_loc = pd.DataFrame({'DateTime': [time_loc], 'InHome': ['Home']})
+else:
+    df_loc = pd.DataFrame({'DateTime': [time_loc], 'InHome': ['Away']})
+
+df2 = pd.concat([df2, df_loc], ignore_index=True)
 
 fileout = open(PATH_JSON, 'w')
 print(df2.to_json(orient='records'), file=fileout)
