@@ -53,7 +53,7 @@ for row in df.itertuples():
                                'InHome': ['Home', 'Away']})
         df2 = pd.concat([df2, df_loc], ignore_index=True)
 
-time_loc = int(time.time()*1000)
+time_loc = int((time.time() + 9 * 3600) * 1000)
 if flag_in_home:
     df_loc = pd.DataFrame({'DateTime': [time_loc], 'InHome': ['Home']})
 else:
